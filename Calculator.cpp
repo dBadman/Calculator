@@ -11,13 +11,13 @@ HINSTANCE hInst;                                // current instance
 WCHAR   szTitle[MAX_LOADSTRING];                  // The title bar text
 WCHAR   szWindowClass[MAX_LOADSTRING];            // The main window class name
 WCHAR   FirstArg[MAX_LOADSTRING];                 // First argument of math
-int     firstNum;
+float    firstNum;
 WCHAR   SecondArg[MAX_LOADSTRING];                // Second Argument of math
-int     secondNum;
+float    secondNum;
 WCHAR   OutputText[MAX_LOADSTRING];               // The Output Text of the Formula
-int     outputNum;
-WCHAR   result[MAX_LOADSTRING];                                   // Result of math
-WCHAR   operation[MAX_LOADSTRING];                                // Math operation
+float    outputNum;
+std::wstringstream   result;   // Result of math
+WCHAR   operation[MAX_LOADSTRING];                               // Math operation
 
 // Forward declarations of functions included in this code module:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -280,19 +280,23 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                     {
                         outputNum = firstNum * secondNum;
                     }
-                    // Converts the resulting maths int into a LPCWSTR
-                    // Currently will give a 0 if set to double. Only likes ints
-                    // Needs work in order to handle fractionl (decimal) calculations. 
-                    // Works for 2+2,84-9,5*70, and 9/3, casue all result in ints but does not work for 7/6
-                    wsprintfW(result,L"%d",outputNum);
+                    // Converts the resulting maths float into a LPCWSTR
+                    // Works for 2+2,84-9,5*70, 9/3 and  7/6
+                    result << outputNum;
                     // displays result string
-                    SetWindowTextW(hwndEditBox1, result);
+                    SetWindowTextW(hwndEditBox1, result.str().c_str());
+                    result.str(L"");
+                    result.clear();
                     break;
                 break;
             default:
                 return DefWindowProc(hWnd, message, wParam, lParam);
             }
         }
+        break;
+    // Work in hear to maybe color the text and background / foreground of window, boxes and text
+    case WM_CTLCOLORSTATIC:
+
         break;
     case WM_PAINT:
         {

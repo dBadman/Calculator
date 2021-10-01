@@ -13,3 +13,7 @@
 #include <malloc.h>
 #include <memory.h>
 #include <tchar.h>
+// String Functionality
+#include <string>
+#include <sstream>
+#include <iostream>
